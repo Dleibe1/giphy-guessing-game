@@ -35,3 +35,7 @@ ENV/
 # General
 .env
 .DS_Store
+
+# VS Code
+*.code-workspace
+.vscode/
