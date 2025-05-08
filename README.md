@@ -14,24 +14,13 @@ source virt/bin/activate
 2. Install necessary python packages:
 
 ```sh
-pip install django
-pip install django-rest-framework
-pip install django-cors-headers
-pip install django-environ
+# From the root directory:
+cd backend
+pip install -r requirements.txt
 ```
 
 3. Provide postgres database information in [backend/beckend/settings.py](backend/backend/settings.py)
 
-
-
 ```python
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "name_of_database",
-        "USER": "postgres_username",
-        "HOST": "localhost",
-    	"PORT": "5432",
-    }
-}
+
 ```

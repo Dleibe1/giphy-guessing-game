@@ -6,5 +6,12 @@ export const getSentence = async (id: number) => {
       const error = new Error(errorMessage)
       throw error
     }
-  } catch (error) {}
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Error in Fetch: ${error.message}`)
+    } else {
+      console.error(`Error in Fetch: ${String(error)}`)
+    }
+    throw error
+  }
 }
