@@ -54,14 +54,23 @@ DEBUG=True  # Set to False in production
 python3 manage.py makemigrations
 python3 manage.py migrate
 ```
-5. Create a superuser for the Django project
+5. Create a superuser for the Django project:
 
 ```sh
 python3 manage.py createsuperuser
 ```
 
-6. Run the Django development server:
+6. Make the setup.sh file executable:
 
 ```sh
-python3 manage.py runserver
+chmod +x setup.sh
 ```
+
+7. Run the setup.sh file to build and serve the React app:
+
+```sh
+# From the root directory (the directory containing setup.sh):
+./setup.sh
+```
+
+8. Visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
