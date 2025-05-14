@@ -4,15 +4,15 @@ echo "Building React frontend..."
 cd frontend
 yarn build
 cd ..
-# Move necessary static assets from the React build to the backend
 
-# Collect static files
+
+# Collect static files (important for production, implementing now)
 echo "Collecting static files..."
 cd backend
 python manage.py collectstatic --noinput
 cd ..
 
-# Move static files from React to the Django backend
+# Move build files from React to the Django backend
 echo "Moving build files to backend..."
 cd frontend
 cp -r build/* ../backend/
