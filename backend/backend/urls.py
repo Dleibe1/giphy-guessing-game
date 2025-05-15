@@ -24,3 +24,4 @@ urlpatterns = [
     path("api/v1/", include("api_app.urls")),
     re_path(r"^(?!api/|admin/).*", ReactAppView.as_view(), name="react_app"),
 ]
+

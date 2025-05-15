@@ -149,3 +149,5 @@ CORS_ALLOWED_ORIGINS = env.list(
         "http://127.0.0.1:3000",
     ],
 )
+
+GIPHY_API_KEY=env("GIPHY_API_KEY")

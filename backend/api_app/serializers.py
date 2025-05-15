@@ -6,7 +6,7 @@ class WordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Word
-        fields = ["id", "word_text", "giphyURL"]
+        fields = ["id", "word_text", "order", "giphyURL"]
 
 
 class SentenceSerializer(serializers.ModelSerializer):
@@ -18,11 +18,14 @@ class SentenceSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         sentence = Sentence.objects.create(**validated_data)
-        words_list = validated_data.get("text", "").split()
-        for word in words_list:
-            Word.objects.create(sentence=sentence, word_text=word)
+        words_list = validated_data.get("text").split()
+        # TODO: add logic for retrieving giphyURLS for the word_list and adding it to each word
+        for order_index, word_text in enumerate(words_list):
+            Word.objects.create(
+                sentence=sentence, order=order_index, word_text=word_text
+            )
         return sentence
 
     def update(self, instance, validated_data):
-        current_words_data = instance.pop("words", [])
-        words_data = validated_data.pop("words", [])
+        existing_words_list = instance.words.all()
+        new_words_list = validated_data.get("text").split()
