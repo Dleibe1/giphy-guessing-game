@@ -1,11 +1,13 @@
 import React from 'react'
+import { Routes, Route } from 'react-router'
+import TestComponent from './components/TestComponent'
 import './App.css'
 
 function App() {
   return (
-    <div className="App">
-      <h1>React Django</h1>
-    </div>
+    <Routes>
+      <Route path="/" element={<TestComponent />} />
+    </Routes>
   )
 }
 
