@@ -1,4 +1,5 @@
 import requests
+import traceback
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -19,13 +20,14 @@ class GiphyProxyView(APIView):
     A view that proxies requests to the Giphy API to fetch a GIF URL
     based on a search term.
     """
+
     def get(self, request, *args, **kwargs):
-        search_term = requests.query_params.get("term", None)
+        search_term = request.query_params.get("query", None)
 
         if not search_term:
             return Response(
                 {"error": "A 'term' query parameter is required."},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         api_key = getattr(settings, "GIPHY_API_KEY", None)
@@ -35,7 +37,7 @@ class GiphyProxyView(APIView):
             print("ERROR: GIPHY_API_KEY not configured in settings.")
             return Response(
                 {"error": "Giphy API service is currently unavailable."},
-                status=status.HTTP_503_SERVICE_UNAVAILABLE
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
 
         search_url = "http://api.giphy.com/v1/gifs/search"
@@ -50,39 +52,31 @@ class GiphyProxyView(APIView):
 
         try:
             api_response = requests.get(search_url, params=params, timeout=5)
-            api_response.raise_for_status()  # Raises an HTTPError for bad responses (4XX or 5XX)
+            api_response.raise_for_status()
             giphy_data = api_response.json()
 
             if giphy_data.get("data"):
-                # You can return the whole Giphy object or just the URL
-                # For example, to return just the URL of the first GIF:
-                # first_gif_url = giphy_data["data"][0]["images"]["original"]["url"]
-                # return Response({"giphy_url": first_gif_url}, status=status.HTTP_200_OK)
-
-                # Or return the relevant part of the Giphy data
                 return Response(giphy_data["data"], status=status.HTTP_200_OK)
             else:
                 return Response(
                     {"message": "No GIFs found for that term."},
-                    status=status.HTTP_404_NOT_FOUND
+                    status=status.HTTP_404_NOT_FOUND,
                 )
 
         except requests.exceptions.Timeout:
             return Response(
                 {"error": "Request to Giphy API timed out."},
-                status=status.HTTP_504_GATEWAY_TIMEOUT
+                status=status.HTTP_504_GATEWAY_TIMEOUT,
             )
         except requests.exceptions.RequestException as e:
-            # Log the error e for server-side debugging
             print(f"Giphy API request error: {e}")
             return Response(
                 {"error": "Could not connect to Giphy API."},
-                status=status.HTTP_502_BAD_GATEWAY
+                status=status.HTTP_502_BAD_GATEWAY,
             )
         except (KeyError, IndexError) as e:
-            # Log the error e
             print(f"Error parsing Giphy response for '{search_term}': {e}")
             return Response(
                 {"error": "Error processing Giphy API response."},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
