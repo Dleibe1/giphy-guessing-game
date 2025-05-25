@@ -22,6 +22,7 @@ module.exports = {
   },
   rules: {
     indent: ['error', 2],
+    'no-console': 'off',
     'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
     'import/extensions': [
       'error',

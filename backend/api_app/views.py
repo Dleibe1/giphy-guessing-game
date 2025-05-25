@@ -1,5 +1,4 @@
 import requests
-import traceback
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -15,6 +14,12 @@ class SentenceViewSet(viewsets.ModelViewSet):
     serializer_class = SentenceSerializer
 
 
+class HighestSentenceIdView(APIView):
+    def get(self, request, *args, **kwargs):
+        highest_id = Sentence.objects.all().order_by("-id")[0].id
+        return Response(highest_id)
+
+
 class GiphyProxyView(APIView):
     """
     A view that proxies requests to the Giphy API to fetch a GIF URL
@@ -26,14 +31,12 @@ class GiphyProxyView(APIView):
 
         if not search_term:
             return Response(
-                {"error": "A 'term' query parameter is required."},
+                {"error": "A 'query' query parameter is required."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
         api_key = getattr(settings, "GIPHY_API_KEY", None)
         if not api_key:
-            # In a real app, you might want to log this error on the server
-            # and return a more generic error to the client.
             print("ERROR: GIPHY_API_KEY not configured in settings.")
             return Response(
                 {"error": "Giphy API service is currently unavailable."},

@@ -64,10 +64,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "backend.urls"
 
+REACT_APP_BUILD_PATH = "../frontend/build"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates", BASE_DIR / "static", BASE_DIR / "staticfiles"],
+        "DIRS": [
+            BASE_DIR / REACT_APP_BUILD_PATH,
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -134,6 +138,7 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
+    BASE_DIR / "../frontend/build/static",
     BASE_DIR / "static",
 ]
 
@@ -150,4 +155,4 @@ CORS_ALLOWED_ORIGINS = env.list(
     ],
 )
 
-GIPHY_API_KEY=env("GIPHY_API_KEY")
+GIPHY_API_KEY = env("GIPHY_API_KEY")
