@@ -2,6 +2,8 @@
 
 Download and install the latest stable version of Python from [https://www.python.org/downloads/](https://www.python.org/downloads/) for your operating system.
 
+## 🚧 This is a work in progress, the MVP is not complete just yet 🚧
+
 ## Usage
 
 1. Create a python virtual environment for the Django project. Type the following into your terminal:
