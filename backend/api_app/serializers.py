@@ -33,7 +33,7 @@ class SentenceSerializer(serializers.ModelSerializer):
         instance.save()
 
         if words_data is not None:
-            self._handle_words(instance, words_data, is_update=True)
+            self._handle_words(instance, words_data)
 
         return instance
 
@@ -66,5 +66,5 @@ class SentenceSerializer(serializers.ModelSerializer):
                     )
                 )
                 
-            if words_to_create:
-                    Word.objects.bulk_create(words_to_create)
+        if words_to_create:
+                Word.objects.bulk_create(words_to_create)
